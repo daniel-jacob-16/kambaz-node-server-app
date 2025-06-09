@@ -43,6 +43,7 @@ export default function UserRoutes(app) {
   };
 
   const signin = (req, res) => { 
+    const { username, password } = req.body;
     const currentUser = dao.findUserByCredentials(username, password);
     if (currentUser) {
       req.session["currentUser"] = currentUser;
@@ -66,6 +67,14 @@ export default function UserRoutes(app) {
     res.sendStatus(200);
   };
 
+  const createCourse = (req, res) => {
+    const currentUser = req.session["currentUser"];
+    const newCourse = courseDao.createCourse(req.body);
+    enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id);
+    res.json(newCourse);
+  };
+
+  app.post("/api/users/current/courses", createCourse);
   app.post("/api/users", createUser);
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
