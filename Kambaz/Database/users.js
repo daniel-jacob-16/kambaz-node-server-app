@@ -1,5 +1,5 @@
 export default [
-[
+
     {
       "_id": "123",
       "username": "iron_man",
@@ -135,5 +135,5 @@ export default [
       "totalActivity": "21:32:43",
       "enrolled": "0"
     }
-  ]
+
 ];
