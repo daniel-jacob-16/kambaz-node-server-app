@@ -8,13 +8,28 @@ import "dotenv/config";
 import CourseRoutes from "./Kambaz/Courses/routes.js";
 import ModuleRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentRoutes from "./Kambaz/Assignments/routes.js";
+const allowedOrigins = [
+  "https://kambaz-react-web-app-2025.netlify.app", // production
+  "https://a5--kambaz-react-web-app-2025.netlify.app", // deploy preview/branch
+];
 
 const app = express()
+
 app.use(cors({
-   credentials: true,
-   origin: process.env.NETLIFY_URL || "http://localhost:5173",
- })
-);
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+// app.use(cors({
+//    credentials: true,
+//    origin: process.env.NETLIFY_URL || "http://localhost:5173",
+//  })
+// );
 const sessionOptions = {
   secret: process.env.SESSION_SECRET || "kambaz",
   resave: false,
