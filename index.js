@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from "mongoose";
 import Hello from "./Hello.js"
 import Lab5 from "./Lab5/index.js";
 import cors from "cors";
@@ -9,10 +10,14 @@ import CourseRoutes from "./Kambaz/Courses/routes.js";
 import ModuleRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentRoutes from "./Kambaz/Assignments/routes.js";
 const allowedOrigins = [
-  "https://kambaz-react-web-app-2025.netlify.app", // production
-  "https://a5--kambaz-react-web-app-2025.netlify.app", // deploy preview/branch
+  "http://localhost:5173",
+  "http://localhost:3000",  // local React dev server
+  "http://127.0.0.1:3000",  // alternate local dev
+  "https://kambaz-react-web-app-2025.netlify.app", 
+  "https://a5--kambaz-react-web-app-2025.netlify.app"
 ];
-
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
+  mongoose.connect(CONNECTION_STRING);  
 const app = express()
 
 app.use(cors({
@@ -25,11 +30,6 @@ app.use(cors({
   },
   credentials: true
 }));
-// app.use(cors({
-//    credentials: true,
-//    origin: process.env.NETLIFY_URL || "http://localhost:5173",
-//  })
-// );
 const sessionOptions = {
   secret: process.env.SESSION_SECRET || "kambaz",
   resave: false,
